@@ -1,100 +1,101 @@
 import UserModel from '../models/User';
+import dbDriver from '../drivers/dbDriver';
 
-export default class User {
+class User {
 
-	static index(req, res) {
+	index(req, res) {
+
+		dbDriver.findAll(UserModel)
+			.then((users) => {
+
+				console.log('Все пользователи, полученые через GET: ' + users);
+				res.status(200).send({ users });
+
+			})
+			.catch((err) => {
+
+				console.log(err);
+				res.status(400).send({message: 'bad record to db'});
+
+			});
+
+	}
+
+	show(req, res) {
+
+		const id = req.params.id;
 		
-		return new Promise((resolve, reject) => {
+		dbDriver.findOne(UserModel, id)
+			.then((user) => {
 
-			UserModel.find((err, users) => {
+				console.log('Пользователь, полученый через GET: ' + user);
+				res.send({ user });
 
-				(err) ? reject(err) : resolve(users);
+			})
+			.catch((err) => {
 
-			});
-
-		});
-
-	}
-
-	static show(req) {
-
-		return new Promise((resolve, reject) => {
-
-			const id = req.params.id;
-
-			UserModel.find({ id }, (err, user) => {
-
-				(err) ? reject(err) : resolve(user);
+				console.log(err);
 
 			});
 
-		});
-
 	}
 
-	static create(req) {
+	create(req, res) {
 
-		return new Promise((resolve, reject) => {
+		const user = req.body.user || '';
+		
+		dbDriver.createField(UserModel, user)
+			.then((user) => {
 
-			const data = req.body.user || '';
+				console.log('Новый пользователь добавлен: ' + user);
+				res.send({ user });
 
-			if (data !== '') {
+			})
+			.catch((err) => {
 
-				UserModel.create(data, (err, user) => {
-
-					(err) ? reject(err) : resolve(user);
-
-				});
-
-			} else {
-
-				reject('Try to create empty user');
-
-			}
-
-		});
-
-	}
-
-	static update(req) {
-
-		return new Promise((resolve, reject) => {
-
-			const id = req.params.id || '';
-			const data = req.body.user || '';
-
-			if (data !== '') {
-
-				UserModel.findOneAndUpdate({ id }, data, (err) => {
-
-					(err) ? reject(err) : resolve();
-
-				});
-
-			} else {
-
-				reject('Try to update user with empty params');
-
-			}
-
-		});
-
-	}
-
-	static delete(req) {
-
-		return new Promise((resolve, reject) => {
-
-			const id = req.params.id;
-
-			UserModel.findOneAndRemove({ id }, (err) => {
-
-				(err) ? reject(err) : resolve();
+				console.log(err);
 
 			});
 
-		});
+	}
+
+	update(req, res) {
+
+		const id = req.params.id || '';
+		const user = req.body.user || '';
+		
+		dbDriver.updateField(UserModel, id, user)
+			.then(() => {
+
+				console.log('Пользователь обновлен!');
+
+			})
+			.catch((err) => {
+
+				console.log(err);
+
+			});
 
 	}
 
-};
+	delete(req, res) {
+
+		const id = req.params.id;
+
+		dbDriver.deleteField(UserModel, id)
+			.then(() => {
+
+				console.log('Пользователь удален!');
+
+			})
+			.catch((err) => {
+
+				console.log(err);
+
+			});
+
+	}
+
+}
+
+export default new User();

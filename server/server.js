@@ -1,30 +1,36 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import router from '/Users/Superuser/Documents/Projects/ToDo/config/routes';
-let app = express();
+import mongoose from 'mongoose';
+import createRouter from '../routes/router';
+import arr from '../routes/index';
+
+let router = express.Router();
+
+mongoose.connect('mongodb://localhost/test', (err) => {
+
+	if (err) {
+		
+		console.log('Error: ' + err);
+		
+	} else {
+		
+		console.log('We are connect to DB');
+		
+	}
+
+});
+
+createRouter(arr, router);
+
+const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
 app.use('/', router);
 
-class Server {
+app.listen(3000, () => {
 
-	static start(port) {
+	console.log('Server start in port: 3000');
 
-		this.createServer(port);
-
-	}
-
-	static createServer(port) {
-
-		app.listen(port, () => {
-
-			console.log('Started on port ' + port);
-
-		});
-
-	}
-
-}
-
-Server.start(3000);
+});

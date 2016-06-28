@@ -1,15 +1,29 @@
-import provider from '/Users/Superuser/Documents/Projects/ToDo/server/crud';
+import UserController from '../controllers/User';
 
-const express = require('express');
-let router = express.Router();
+export default function createRouter(arr, router) {
+
+	for (let i = 0; i < arr.length; i++) {
+		
+		let route = arr[i];
+
+		router[route.method](route.url, route.action);
+
+	}
+
+	return router;
+	
+};
 
 // middleware that is specific to this router
+/*
 router.use(function timeLog(req, res, next) {
 
 	console.log('Time: ', Date.now());
 	next();
 
 });
+
+let req = 5
 
 router.get('/get_all', (req, res) => {
 
@@ -95,3 +109,5 @@ router.delete('/delete/:id', (req, res) => {
 });
 
 module.exports = router;
+
+	*/

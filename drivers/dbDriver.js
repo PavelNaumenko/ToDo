@@ -1,6 +1,6 @@
 class dbDriver {
 
-	findAll(model) {
+	readAll(model) {
 
 		return new Promise((resolve, reject) => {
 
@@ -14,7 +14,7 @@ class dbDriver {
 
 	}
 
-	findOne(model, id) {
+	readOne(model, id) {
 
 		return new Promise((resolve, reject) => {
 
@@ -56,7 +56,7 @@ class dbDriver {
 		return new Promise((resolve, reject) => {
 
 			if (data !== '') {
-
+                
 				model.findOneAndUpdate({ id }, data, (err) => {
 
 					(err) ? reject(err) : resolve();

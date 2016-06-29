@@ -5,7 +5,7 @@ class User {
 
 	index(req, res) {
 
-		dbDriver.findAll(UserModel)
+		dbDriver.readAll(UserModel)
 			.then((users) => {
 
 				console.log('Все пользователи, полученые через GET: ' + users);
@@ -15,7 +15,7 @@ class User {
 			.catch((err) => {
 
 				console.log(err);
-				res.status(400).send({message: 'bad record to db'});
+				res.status(400).send({ message: 'can not read data from db '  });
 
 			});
 
@@ -25,16 +25,17 @@ class User {
 
 		const id = req.params.id;
 		
-		dbDriver.findOne(UserModel, id)
+		dbDriver.readOne(UserModel, id)
 			.then((user) => {
 
 				console.log('Пользователь, полученый через GET: ' + user);
-				res.send({ user });
+				res.status(200).send({ user });
 
 			})
 			.catch((err) => {
 
 				console.log(err);
+				res.status(400).send({ message: 'can not read data from db '  });
 
 			});
 
@@ -48,12 +49,13 @@ class User {
 			.then((user) => {
 
 				console.log('Новый пользователь добавлен: ' + user);
-				res.send({ user });
+				res.status(200).send({ user });
 
 			})
 			.catch((err) => {
 
 				console.log(err);
+				res.status(400).send({ message: 'can not create data'  });
 
 			});
 
@@ -68,11 +70,14 @@ class User {
 			.then(() => {
 
 				console.log('Пользователь обновлен!');
+				res.status(200);
 
 			})
 			.catch((err) => {
 
 				console.log(err);
+				res.status(400).send({ message: 'can not update data'  });
+
 
 			});
 
@@ -86,11 +91,13 @@ class User {
 			.then(() => {
 
 				console.log('Пользователь удален!');
+				res.status(200);
 
 			})
 			.catch((err) => {
 
 				console.log(err);
+				res.status(400).send({ message: 'can not delete data'  });
 
 			});
 

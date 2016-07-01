@@ -1,7 +1,8 @@
-import UserModel from '../models/User';
+import UserModel from '../shemas/User';
+import User from '../models/User';
 import dbDriver from '../drivers/dbDriver';
 
-class User {
+class UserController {
 
 	index(req, res) {
 
@@ -23,19 +24,21 @@ class User {
 
 	show(req, res) {
 
-		const id = req.params.id;
-		
-		dbDriver.readOne(UserModel, id)
+		const token = req.headers.authorization || '';
+		const id = req.params.id || '';
+
+		User.readUser(token, id)
 			.then((user) => {
 
-				console.log('Пользователь, полученый через GET: ' + user);
-				res.status(200).send({ user });
+				console.log(user);
+				console.log('Пользователь, полученый через GET: ' + user[0].login);
+				res.status(200).send(user.login);
 
 			})
-			.catch((err) => {
+			.catch((err, status) => {
 
 				console.log(err);
-				res.status(400).send({ message: 'can not read data from db '  });
+				res.status(status).send({ message: err });
 
 			});
 
@@ -43,19 +46,25 @@ class User {
 
 	create(req, res) {
 
-		const user = req.body.user || '';
-		
-		dbDriver.createField(UserModel, user)
+		let user = req.body.user || '';
+
+		User.create(user)
 			.then((user) => {
 
-				console.log('Новый пользователь добавлен: ' + user);
-				res.status(200).send({ user });
+				console.log('Созданный пользователь: ' + user);
+
+				res.status(200).json({
+
+					token: user.token,
+					expired: user.expired
+
+				});
 
 			})
 			.catch((err) => {
 
 				console.log(err);
-				res.status(400).send({ message: 'can not create data'  });
+				res.status(400).send(err);
 
 			});
 
@@ -105,4 +114,4 @@ class User {
 
 }
 
-export default new User();
+export default new UserController();

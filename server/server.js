@@ -9,13 +9,13 @@ let router = express.Router();
 mongoose.connect('mongodb://localhost/test', (err) => {
 
 	if (err) {
-		
+
 		console.log('Error: ' + err);
-		
+
 	} else {
-		
+
 		console.log('We are connect to DB');
-		
+
 	}
 
 });

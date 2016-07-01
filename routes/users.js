@@ -1,4 +1,4 @@
-import UserController from '../controllers/User';
+import UserController from '../controllers/UserController';
 
 export default [
 
@@ -17,7 +17,7 @@ export default [
 		method: 'get'
 
 	},
-
+	
 	{
 
 		url: '/users/new',
@@ -40,7 +40,7 @@ export default [
 		action: UserController.delete,
 		method: 'delete'
 
-	}
+	},
 
 ];
 

@@ -8,17 +8,17 @@ class dbDriver {
 
 				(err) ? reject(err) : resolve(data);
 
-			});
+			}).sort({ login: 'asc' });
 
 		});
 
 	}
-
-	readOne(model, id) {
+	
+	readByCriteria(model, criteria) {
 
 		return new Promise((resolve, reject) => {
 
-			model.find({ id }, (err, user) => {
+			model.find(criteria, (err, user) => {
 
 				(err) ? reject(err) : resolve(user);
 
@@ -37,13 +37,13 @@ class dbDriver {
 
 				model.create(data, (err, data) => {
 
-					(err) ? reject(err) : resolve(data);
+					(err) ? reject({ message: 'user already exist' }) : resolve(data);
 
 				});
 
 			} else {
 
-				reject('Try to create empty field');
+				reject({ message: 'empty data' });
 
 			}
 
@@ -51,13 +51,13 @@ class dbDriver {
 
 	}
 
-	updateField(model, id, data) {
+	updateField(model, _id, data) {
 
 		return new Promise((resolve, reject) => {
 
 			if (data !== '') {
                 
-				model.findOneAndUpdate({ id }, data, (err) => {
+				model.findOneAndUpdate({ _id }, data, (err) => {
 
 					(err) ? reject(err) : resolve();
 
@@ -73,11 +73,11 @@ class dbDriver {
 
 	}
 
-	deleteField(model, id) {
+	deleteField(model, _id) {
 
 		return new Promise((resolve, reject) => {
 
-			model.findOneAndRemove({ id }, (err) => {
+			model.findOneAndRemove({ _id }, (err) => {
 
 				(err) ? reject(err) : resolve();
 

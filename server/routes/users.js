@@ -5,7 +5,7 @@ export default [
 	{
 
 		url: '/users',
-		action: UserController.index,
+		action: UserController.showAll,
 		method: 'get'
 
 	},
@@ -13,7 +13,7 @@ export default [
 	{
 
 		url: '/user/:id',
-		action: UserController.show,
+		action: UserController.showOne,
 		method: 'get'
 
 	},
@@ -41,6 +41,14 @@ export default [
 		method: 'delete'
 
 	},
+	
+	{
+		
+		url: '/user/login',
+		action: UserController.logIn,
+		method: 'post'
+		
+	}
 
 ];
 

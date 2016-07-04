@@ -1,8 +1,8 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
-import createRouter from '../routes/router';
-import arr from '../routes/index';
+import createRouter from './routes/router';
+import arr from './routes/index';
 
 let router = express.Router();
 

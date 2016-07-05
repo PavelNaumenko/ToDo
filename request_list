@@ -1,0 +1,421 @@
+//
+//
+// USER API
+//
+//
+
+
+/*
+* Success create user
+*/
+
+fetch("http://localhost:3000/users/new", {
+   method: "POST",
+   headers: {
+    'Content-Type': "application/json"
+   },
+   body: JSON.stringify({
+     "user": {
+       "login": 'King',
+       "password": '123456',
+       "confirm_password": '123456'
+     }
+   })
+}).then( response => {
+   response.json().then( data => {
+      console.log(data);
+      localStorage.setItem('token', data.token);
+   });
+});
+
+
+/*
+* Error create user - user already exist
+*/
+
+fetch("http://localhost:3000/users/new", {
+   method: "POST",
+   headers: {
+    'Content-Type': "application/json"
+   },
+   body: JSON.stringify({
+     "user": {
+       "login": 'User20',
+       "password": '123456',
+       "confirm_password": '123456'
+     }
+   })
+}).then( response => {
+   response.json().then( data => {
+      console.log(data)
+   });
+});
+
+/*
+* Error create user - incorrect login
+*/
+
+fetch("http://localhost:3000/users/new", {
+   method: "POST",
+   headers: {
+    'Content-Type': "application/json"
+   },
+   body: JSON.stringify({
+     "user": {
+       "login": '',
+       "password": '123456',
+       "confirm_password": '123456'
+     }
+   })
+}).then( response => {
+   response.json().then( data => {
+      console.log(data)
+   });
+});
+
+/*
+* Error create user - incorrect password
+*/
+
+fetch("http://localhost:3000/users/new", {
+   method: "POST",
+   headers: {
+    'Content-Type': "application/json"
+   },
+   body: JSON.stringify({
+     "user": {
+       "login": { LOGIN },
+       "password": '123',
+       "confirm_password": '123'
+     }
+   })
+}).then( response => {
+   response.json().then( data => {
+      console.log(data)
+   });
+});
+
+/*
+* Error create user - password and confirm_password are different
+*/
+
+fetch("http://localhost:3000/users/new", {
+   method: "POST",
+   headers: {
+    'Content-Type': "application/json"
+   },
+   body: JSON.stringify({
+     "user": {
+       "login": { LOGIN },
+       "password": '123456',
+       "confirm_password": '654321'
+     }
+   })
+}).then( response => {
+   response.json().then( data => {
+      console.log(data)
+   });
+});
+
+/*
+* Success read all users
+*/
+
+fetch("http://localhost:3000/users", {
+   method: "GET",
+   headers: {
+    'Authorization': localStorage.getItem('token')
+   }
+}).then( response => {
+   response.json().then( data => {
+      console.log(data)
+   });
+});
+
+/*
+* Error read all users - token has been passed
+*/
+
+fetch("http://localhost:3000/users", {
+   method: "GET",
+   headers: {
+
+   }
+}).then( response => {
+   response.json().then( data => {
+      console.log(data)
+   });
+});
+
+/*
+* Error read all users - incorrect token
+*/
+
+fetch("http://localhost:3000/users", {
+   method: "GET",
+   headers: {
+     'Authorization': localStorage.getItem('token') + '123'
+   }
+}).then( response => {
+   response.json().then( data => {
+      console.log(data)
+   });
+});
+
+/*
+* Success read one user
+*/
+
+fetch("http://localhost:3000/user/{ ID }", {
+   method: "GET",
+   headers: {
+    'Authorization': localStorage.getItem('token')
+   }
+}).then( response => {
+   response.json().then( data => {
+      console.log(data)
+   });
+});
+
+/*
+* Success update user
+*/
+
+fetch("http://localhost:3000/user/{ ID }", {
+   method: "PUT",
+   headers: {
+    'Content-Type': "application/json",
+    'Authorization': localStorage.getItem('token')
+   },
+   body: JSON.stringify({
+     "user": {
+       "login": { LOGIN }
+     }
+   })
+}).then( response => {
+   response.json().then( data => {
+      console.log(data)
+   });
+});
+
+/*
+* Success delete user
+*/
+
+fetch("http://localhost:3000/user/{ ID }", {
+   method: "DELETE",
+   headers: {
+    'Content-Type': "application/json",
+    'Authorization': localStorage.getItem('token')
+   }
+}).then( response => {
+   response.json().then( data => {
+      console.log(data)
+   });
+});
+
+/*
+* Success login
+*/
+
+fetch("http://localhost:3000/user/login", {
+   method: "POST",
+   headers: {
+    'Content-Type': "application/json"
+   },
+   body: JSON.stringify({
+    'login': { LOGIN },
+    'password': { PASSWORD }
+   })
+}).then( response => {
+   response.json().then( data => {
+      console.log(data);
+      localStorage.setItem('token', data.token);
+   });
+});
+
+/*
+* Error login - incorrect login
+*/
+
+fetch("http://localhost:3000/user/login", {
+   method: "POST",
+   headers: {
+    'Content-Type': "application/json"
+   },
+   body: JSON.stringify({
+    'login': { INCORRECT_LOGIN },
+    'password': { PASSWORD }
+   })
+}).then( response => {
+   response.json().then( data => {
+      console.log(data);
+      localStorage.setItem('token', data.token);
+   });
+});
+
+/*
+* Error login - incorrect password
+*/
+
+fetch("http://localhost:3000/user/login", {
+   method: "POST",
+   headers: {
+    'Content-Type': "application/json"
+   },
+   body: JSON.stringify({
+    'login': { LOGIN },
+    'password': { INCORRECT_PASSWORD }
+   })
+}).then( response => {
+   response.json().then( data => {
+      console.log(data);
+      localStorage.setItem('token', data.token);
+   });
+});
+
+//
+//
+// TASK API
+//
+//
+
+/*
+* Success create task
+*/
+
+fetch("http://localhost:3000/user/{ ID }/tasks/new", {
+   method: "POST",
+   headers: {
+    'Content-Type': "application/json",
+    'Authorization': localStorage.getItem('token')
+   },
+   body: JSON.stringify({
+     "task": {
+       "title": { TITLE },
+       "description": { DESCRIPTION }
+     }
+   })
+}).then( response => {
+   response.json().then( data => {
+      console.log(data)
+   });
+});
+
+/*
+* Success read all tasks
+*/
+
+fetch("http://localhost:3000/user/{ ID }/tasks", {
+   method: "GET",
+   headers: {
+    'Content-Type': "application/json",
+    'Authorization': localStorage.getItem('token')
+   }
+}).then( response => {
+   response.json().then( data => {
+      console.log(data)
+   });
+});
+
+/*
+* Error read all tasks - empty token
+*/
+
+fetch("http://localhost:3000/user/{ ID }/tasks", {
+   method: "GET",
+   headers: {
+    'Content-Type': "application/json"
+   }
+}).then( response => {
+   response.json().then( data => {
+      console.log(data)
+   });
+});
+
+/*
+* Error read all tasks - access denied
+*/
+
+fetch("http://localhost:3000/user/{ NOT_YOUR_ID }/tasks", {
+   method: "GET",
+   headers: {
+    'Content-Type': "application/json",
+    'Authorization': localStorage.getItem('token')
+   }
+}).then( response => {
+   response.json().then( data => {
+      console.log(data)
+   });
+});
+
+/*
+* Success read all active tasks
+*/
+
+fetch("http://localhost:3000/user/{ ID }/tasks/active", {
+   method: "GET",
+   headers: {
+    'Content-Type': "application/json",
+    'Authorization': localStorage.getItem('token')
+   }
+}).then( response => {
+   response.json().then( data => {
+      console.log(data)
+   });
+});
+
+
+/*
+* Success update task
+*/
+
+fetch("http://localhost:3000/user/{ ID }/tasks/{ TASK_ID }/update", {
+   method: "PUT",
+   headers: {
+    'Content-Type': "application/json",
+    'Authorization': localStorage.getItem('token')
+   },
+   body: JSON.stringify({
+     "task": {
+       "title": { NEW_TITLE },
+       "description": { NEW_DESCRIPTION }
+     }
+   })
+}).then( response => {
+   response.json().then( data => {
+      console.log(data)
+   });
+});
+
+/*
+* Success delete task
+*/
+
+fetch("http://localhost:3000/user/{ ID }/tasks/{ TASK_ID }/delete", {
+   method: "DELETE",
+   headers: {
+    'Content-Type': "application/json",
+    'Authorization': localStorage.getItem('token')
+   }
+}).then( response => {
+   response.json().then( data => {
+      console.log(data)
+   });
+});
+
+/*
+* Success change task status
+*/
+
+fetch("http://localhost:3000/user/{ ID }/tasks/{ TASK_ID }/changeStatus", {
+   method: "PUT",
+   headers: {
+    'Content-Type': "application/json",
+    'Authorization': localStorage.getItem('token')
+   }
+}).then( response => {
+   response.json().then( data => {
+      console.log(data)
+   });
+});

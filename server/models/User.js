@@ -1,7 +1,8 @@
 import dbDriver from '../drivers/dbDriver';
-import UserModel from '../shemas/User';
 import passwordHash from 'password-hash';
 import jwt from 'jsonwebtoken';
+
+const myDriver = new dbDriver('userModel');
 
 class User {
 
@@ -19,7 +20,7 @@ class User {
 
 			criteria[field] = value;
 
-			dbDriver.readByCriteria(UserModel, criteria)
+			myDriver.readByCriteria(criteria)
 				.then((user) => {
 
 					if (user.length == 0) {
@@ -99,8 +100,8 @@ class User {
 					user.token = this.createToken(user.login);
 					user.expired = this.createExpired();
 					user.password = this.hashPassword(user.password);
-					
-					dbDriver.createField(UserModel, user)
+
+					myDriver.createField(user)
 						.then((user) => {
 
 							resolve(user);
@@ -198,7 +199,7 @@ class User {
 
 					if (result.answer) {
 
-						dbDriver.readByCriteria(UserModel, { _id: +(id) })
+						myDriver.readByCriteria({ _id: +(id) })
 							.then((user) => {
 
 								resolve(user);
@@ -232,7 +233,7 @@ class User {
 
 					if (result.answer) {
 
-						dbDriver.readAll(UserModel)
+						myDriver.readAll()
 							.then((user) => {
 								
 								resolve(user);
@@ -266,7 +267,7 @@ class User {
 
 					if (result.answer) {
 
-						dbDriver.updateField(UserModel, id, user)
+						myDriver.updateField(id, user)
 							.then(() => {
 
 								resolve();
@@ -300,7 +301,7 @@ class User {
 
 					if (result.answer) {
 
-						dbDriver.deleteField(UserModel, id)
+						myDriver.deleteField(id)
 							.then(() => {
 
 								resolve();
@@ -329,7 +330,7 @@ class User {
 
 		return new Promise((resolve, reject) => {
 
-			dbDriver.readByCriteria(UserModel, { login })
+			myDriver.readByCriteria({ login })
 				.then((user) => {
 
 					if (user.length === 0) {
@@ -345,7 +346,7 @@ class User {
 						let token = this.createToken(login);
 						let expired = this.createExpired();
 
-						dbDriver.updateField(UserModel, user[0]._id, { token, expired })
+						myDriver.updateField(user[0]._id, { token, expired })
 							.then(() => {
 
 								resolve(token);

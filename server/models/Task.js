@@ -1,6 +1,7 @@
 import dbDriver from '../drivers/dbDriver';
-import TaskModel from '../shemas/Task';
 import User from './User';
+
+const myDriver = new dbDriver('taskModel');
 
 class Task {
 
@@ -13,7 +14,7 @@ class Task {
 
 					if (result.answer) {
 
-						dbDriver.readByCriteria(TaskModel, { userId: result.userId })
+						myDriver.readByCriteria({ userId: result.userId })
 							.then((tasks) => {
 
 								resolve(tasks);
@@ -47,7 +48,7 @@ class Task {
 
 					if (result.answer) {
 
-						dbDriver.readByCriteria(TaskModel, { userId: result.userId, status: taskStatus })
+						myDriver.readByCriteria({ userId: result.userId, status: taskStatus })
 							.then((tasks) => {
 
 								resolve(tasks);
@@ -84,7 +85,7 @@ class Task {
 						task.startDate = new Date();
 						task.userId = result.userId;
 
-						dbDriver.createField(TaskModel, task)
+						myDriver.createField(task)
 							.then((task) => {
 
 								resolve(task);
@@ -118,7 +119,7 @@ class Task {
 
 					if (result.answer) {
 
-						dbDriver.updateField(TaskModel, taskId, task)
+						myDriver.updateField(taskId, task)
 							.then(() => {
 
 								resolve();
@@ -152,7 +153,7 @@ class Task {
 
 					if (result.answer) {
 
-						dbDriver.deleteField(TaskModel, taskId)
+						myDriver.deleteField(taskId)
 							.then(() => {
 
 								resolve();
@@ -186,12 +187,12 @@ class Task {
 
 					if (result.answer) {
 
-						dbDriver.readByCriteria(TaskModel, { _id: taskId })
+						myDriver.readByCriteria({ _id: taskId })
 							.then((task) => {
 
 								if (task[0].status === 'active') {
 
-									dbDriver.updateField(TaskModel, taskId,
+									myDriver.updateField(taskId,
 										{ complitedDate: new Date(), status: 'complited' })
 										.then(() => {
 
@@ -207,7 +208,7 @@ class Task {
 
 								} else if (task[0].status === 'complited') {
 
-									dbDriver.updateField(TaskModel, taskId,
+									myDriver.updateField(taskId,
 										{ complitedDate: '', status: 'active' })
 										.then(() => {
 

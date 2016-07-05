@@ -1,10 +1,33 @@
-class dbDriver {
+import UserModel from '../shemas/User';
+import TaskModel from '../shemas/Task';
 
-	readAll(model) {
+export default class dbDriver {
+
+	constructor(model) {
+
+		switch (model) {
+
+			case 'userModel':
+				this.model = UserModel;
+				break;
+			
+			case 'taskModel':
+				this.model = TaskModel;
+				break;
+			
+			default:
+				console.log('Incorrect model!');
+				
+
+		}
+
+	}
+
+	readAll() {
 
 		return new Promise((resolve, reject) => {
 
-			model.find((err, data) => {
+			this.model.find((err, data) => {
 
 				(err) ? reject(err) : resolve(data);
 
@@ -14,11 +37,11 @@ class dbDriver {
 
 	}
 	
-	readByCriteria(model, criteria) {
+	readByCriteria(criteria) {
 
 		return new Promise((resolve, reject) => {
 
-			model.find(criteria, (err, user) => {
+			this.model.find(criteria, (err, user) => {
 
 				(err) ? reject(err) : resolve(user);
 
@@ -28,14 +51,14 @@ class dbDriver {
 
 	}
 
-	createField(model, data) {
+	createField(data) {
 
 		return new Promise((resolve, reject) => {
 
 
 			if (data !== '') {
 
-				model.create(data, (err, data) => {
+				this.model.create(data, (err, data) => {
 
 					(err) ? reject({ message: 'user already exist' }) : resolve(data);
 
@@ -51,13 +74,13 @@ class dbDriver {
 
 	}
 
-	updateField(model, _id, data) {
+	updateField(_id, data) {
 
 		return new Promise((resolve, reject) => {
 
 			if (data !== '') {
-                
-				model.findOneAndUpdate({ _id }, data, (err) => {
+
+				this.model.findOneAndUpdate({ _id }, data, (err) => {
 
 					(err) ? reject(err) : resolve();
 
@@ -73,11 +96,11 @@ class dbDriver {
 
 	}
 
-	deleteField(model, _id) {
+	deleteField(_id) {
 
 		return new Promise((resolve, reject) => {
 
-			model.findOneAndRemove({ _id }, (err) => {
+			this.model.findOneAndRemove({ _id }, (err) => {
 
 				(err) ? reject(err) : resolve();
 
@@ -88,5 +111,3 @@ class dbDriver {
 	}
 
 }
-
-export default new dbDriver();

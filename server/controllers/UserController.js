@@ -56,8 +56,6 @@ class UserController {
 		User.create(user)
 			.then((user) => {
 
-				console.log('Созданный пользователь: ' + user);
-
 				res.status(200).json({
 
 					token: user.token,

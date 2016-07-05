@@ -33,7 +33,7 @@ let userSchema = mongoose.Schema({
 
 	}
 
-}, { verionKey: false });
+}, { versionKey: false });
 
 userSchema.plugin(autoIncrement.plugin, 'user');
 

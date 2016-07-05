@@ -1,34 +1,34 @@
-import TaskController from '../controllers/Task';
+import TaskController from '../controllers/TaskController';
 
 export default [
 
 	{
 
-		url: '/users',
-		action: TaskController.index,
+		url: '/user/:id/tasks',
+		action: TaskController.readAll,
 		method: 'get'
 
 	},
 
 	{
 
-		url: '/user/:id',
-		action: TaskController.show,
+		url: '/user/:id/tasks/:status',
+		action: TaskController.readByStatus,
 		method: 'get'
 
 	},
 
 	{
 
-		url: '/users/new',
-		action: TaskController.create,
+		url: '/user/:id/tasks/new',
+		action: TaskController.new,
 		method: 'post'
 
 	},
 
 	{
 
-		url: '/user/:id',
+		url: '/user/:id/tasks/:taskId/update',
 		action: TaskController.update,
 		method: 'put'
 
@@ -36,10 +36,18 @@ export default [
 
 	{
 
-		url: '/user/:id',
+		url: '/user/:id/tasks/:taskId/delete',
 		action: TaskController.delete,
 		method: 'delete'
 
+	},
+	
+	{
+
+		url: '/user/:id/tasks/:taskId/changeStatus',
+		action: TaskController.changeStatus,
+		method: 'put'
+		
 	}
 
 ];

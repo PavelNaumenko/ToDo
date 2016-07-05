@@ -172,7 +172,7 @@ class User {
 
 						} else {
 
-							resolve({ answer: true });
+							resolve({ answer: true, userId: result.user[0]._id });
 
 						}
 

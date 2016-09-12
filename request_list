@@ -268,9 +268,9 @@ fetch("http://localhost:3000/user/login", {
     'password': { INCORRECT_PASSWORD }
    })
 }).then( response => {
-   response.json().then( data => {
-      console.log(data);
-      localStorage.setItem('token', data.token);
+   response.json().then( token => {
+      console.log(token);
+      localStorage.setItem('token', token);
    });
 });
 
@@ -292,8 +292,8 @@ fetch("http://localhost:3000/user/{ ID }/tasks/new", {
    },
    body: JSON.stringify({
      "task": {
-       "title": { TITLE },
-       "description": { DESCRIPTION }
+       "title": 'Hello',
+       "description": 'World'
      }
    })
 }).then( response => {
@@ -389,11 +389,11 @@ fetch("http://localhost:3000/user/{ ID }/tasks/{ TASK_ID }/update", {
 });
 
 /*
-* Success delete task
+* Success change task status
 */
 
-fetch("http://localhost:3000/user/{ ID }/tasks/{ TASK_ID }/delete", {
-   method: "DELETE",
+fetch("http://localhost:3000/user/{ ID }/tasks/{ TASK_ID }/changeStatus", {
+   method: "PUT",
    headers: {
     'Content-Type': "application/json",
     'Authorization': localStorage.getItem('token')
@@ -405,11 +405,11 @@ fetch("http://localhost:3000/user/{ ID }/tasks/{ TASK_ID }/delete", {
 });
 
 /*
-* Success change task status
+* Success delete task
 */
 
-fetch("http://localhost:3000/user/{ ID }/tasks/{ TASK_ID }/changeStatus", {
-   method: "PUT",
+fetch("http://localhost:3000/user/{ ID }/tasks/{ TASK_ID }/delete", {
+   method: "DELETE",
    headers: {
     'Content-Type': "application/json",
     'Authorization': localStorage.getItem('token')

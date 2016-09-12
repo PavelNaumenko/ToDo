@@ -60,7 +60,7 @@ export default class dbDriver {
 
 				this.model.create(data, (err, data) => {
 
-					(err) ? reject({ message: 'user already exist' }) : resolve(data);
+					(err) ? reject({ message: 'field already exist' }) : resolve(data);
 
 				});
 
@@ -80,7 +80,7 @@ export default class dbDriver {
 
 			if (data !== '') {
 
-				this.model.findOneAndUpdate({ _id }, data, (err) => {
+				this.model.findOneAndUpdate(_id, data, (err) => {
 
 					(err) ? reject(err) : resolve();
 

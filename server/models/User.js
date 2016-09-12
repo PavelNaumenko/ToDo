@@ -2,7 +2,7 @@ import dbDriver from '../drivers/dbDriver';
 import passwordHash from 'password-hash';
 import jwt from 'jsonwebtoken';
 
-const myDriver = new dbDriver('userModel');
+const userDriver = new dbDriver('userModel');
 
 class User {
 
@@ -20,7 +20,7 @@ class User {
 
 			criteria[field] = value;
 
-			myDriver.readByCriteria(criteria)
+			userDriver.readByCriteria(criteria)
 				.then((user) => {
 
 					if (user.length == 0) {
@@ -101,7 +101,7 @@ class User {
 					user.expired = this.createExpired();
 					user.password = this.hashPassword(user.password);
 
-					myDriver.createField(user)
+					userDriver.createField(user)
 						.then((user) => {
 
 							resolve(user);
@@ -199,7 +199,7 @@ class User {
 
 					if (result.answer) {
 
-						myDriver.readByCriteria({ _id: +(id) })
+						userDriver.readByCriteria({ _id: +(id) })
 							.then((user) => {
 
 								resolve(user);
@@ -233,7 +233,7 @@ class User {
 
 					if (result.answer) {
 
-						myDriver.readAll()
+						userDriver.readAll()
 							.then((user) => {
 								
 								resolve(user);
@@ -267,7 +267,7 @@ class User {
 
 					if (result.answer) {
 
-						myDriver.updateField(id, user)
+						userDriver.updateField(id, user)
 							.then(() => {
 
 								resolve();
@@ -301,7 +301,7 @@ class User {
 
 					if (result.answer) {
 
-						myDriver.deleteField(id)
+						userDriver.deleteField(id)
 							.then(() => {
 
 								resolve();
@@ -330,8 +330,7 @@ class User {
 
 		return new Promise((resolve, reject) => {
 
-			myDriver.readByCriteria({ login })
-				.then((user) => {
+			userDriver.readByCriteria({ login }).then((user) => {
 
 					if (user.length === 0) {
 
@@ -346,7 +345,7 @@ class User {
 						let token = this.createToken(login);
 						let expired = this.createExpired();
 
-						myDriver.updateField(user[0]._id, { token, expired })
+						userDriver.updateField(user[0]._id, { token, expired })
 							.then(() => {
 
 								resolve(token);
